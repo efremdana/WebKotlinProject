@@ -1,0 +1,45 @@
+{% extends "./Layout.peb" %}
+{# @pebvariable name="model" type="ru.ac.uniyar.models.RecipeVM" #}
+{% block content %}
+    <div class="container">
+        <h2>{{ model.recipe.name }}
+        {% if model.permissions.canEditAndDeleteRecipe %}
+            <a href="/cookbook/{{ model.recipe.number }}/edit">Редактировать</a>
+        {% endif %}
+        </h2>
+        <h4>Время готовки: {{ model.recipe.cookingTime }}</h4>
+        <h4>Тип блюда: {{ model.recipe.type.type }}</h4>
+        <p>Описание: {{ model.recipe.description }}</p>
+        <p>Ингредиенты:
+        {% if model.permissions.canEditAndDeleteRecipe %}
+            <a href="/cookbook/{{ model.recipe.number }}/new-ingredient-form">Добавить</a>
+        {% endif %}
+        </p>
+        <ul>
+            {% for ingredient in model.recipe.getListIngredient() %}
+                <li>
+                {% if model.permissions.canEditAndDeleteRecipe %}
+                    <a href="/cookbook/{{ model.recipe.number }}/{{ loop.index }}/edit-ingredient-form">
+                    {{ ingredient.name }}</a> -
+                {% else %}
+                    {{ ingredient.name }} -
+                {% endif %}
+                {{ ingredient.number }} {{ ingredient.unit.type }}
+                {% if model.permissions.canEditAndDeleteRecipe %}
+                    <a href="/cookbook/{{ model.recipe.number }}/{{ loop.index }}/delete-ingredient-form">Удалить</a>
+                {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <ol>
+            {% for step in model.recipe.steps %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+        <a class="btn btn-secondary btn-sm" href="/author/{{ model.recipe.author }}" role="button">Автор</a>
+        {% if model.permissions.canEditAndDeleteRecipe %}
+            <a class="btn btn-outline-warning" href="/cookbook/{{ model.recipe.number }}/delete" role="button">Удалить</a>
+        {% endif %}
+    </div>
+{% endblock %}
+

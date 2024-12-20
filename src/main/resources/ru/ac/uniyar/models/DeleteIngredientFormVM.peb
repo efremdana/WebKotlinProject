@@ -1,0 +1,25 @@
+    {% extends "./Layout.peb" %}
+    {# @pebvariable name="model" type="ru.ac.uniyar.models.DeleteIngredientFormVM" #}
+{% block content %}
+    <div>
+        <header>Удаляемый ингредиент</header>
+        <h1>{{ model.ingredient.name}}</h1>
+        <h3>Количество: {{ model.ingredient.number }}</h3>
+        <h3>Единица измерения: {{ model.ingredient.unit.type }}</h3>
+    </div>
+    <div>
+        <form method="POST">
+          <div class="mb-3 form-check">
+            <input type="checkbox" name="checkRemove" class="form-check-input" id="checkRemove">
+            <label class="form-check-label" for="checkRemove">Уверены, что хотите удалить ингредиент?</label>
+          </div>
+          </div>
+            {% if model.checkRemove == "off" %}
+            <div class="alert alert-danger mb-3" role="alert">
+                Нужно подтвердить удаление
+            </div>
+            {% endif %}
+          <button type="submit" class="btn btn-primary">Удалить</button>
+        </form>
+    </div>
+{% endblock %}

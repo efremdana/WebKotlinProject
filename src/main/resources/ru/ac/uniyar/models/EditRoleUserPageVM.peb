@@ -1,0 +1,21 @@
+{% extends "./Layout.peb" %}
+{# @pebvariable name="model" type="ru.ac.uniyar.models.EditRoleUserPageVM" #}
+{% block content %}
+<div class="container">
+    <form method="POST">
+        <div class="mb-3">
+            <h2>Пользователь: {{ model.client.userName }}</h2>
+            <h2>Имя: {{ model.client.name }}</h2>
+            <h2>Дата регистрации: {{ model.client.registration }}</h2>
+        </div>
+        <div class="mb-3">
+            <label for="type">Выбери тип блюда</label>
+            <select class="form-control" name="role" id="type" value="{{ model.role }}">
+                <option>user</option>
+                <option>moderator</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Изменить</button>
+    </form>
+</div>
+{% endblock %}

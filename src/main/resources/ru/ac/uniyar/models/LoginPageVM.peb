@@ -1,0 +1,30 @@
+{% extends "./Layout.peb" %}
+{# @pebvariable name="model" type="ru.ac.uniyar.models.LoginPageVM" #}
+{% block content %}
+    <div class="container">
+    <form method="POST">
+        <div class="mb-3">
+            <label>Ваш логин</label>
+            <input class="form-control" name="userName" placeholder="Введите логин" value="{{ model.form.fields["userName"] | first }}" required>
+        </div>
+        <div class="mb-3">
+            <label>Пароль</label>
+            <input type="password" class="form-control" name="password" placeholder="Введите пароль" value="{{ model.form.fields["password"] | first }}" required>
+            <small class="form-text text-muted">Пароль должен содержать цифры и буквы и быть не менее 8 символов</small>
+        </div>
+        <div class="mb-3">
+            <label>Подтверждение пароля</label>
+            <input type="password" class="form-control" name="passwordCheck" placeholder="Введите пароль" value="{{ model.form.fields["passwordCheck"] | first }}" required>
+        </div>
+        {% if model.form.errors.size() > 0 or model.errors.size() > 0 %}
+        <div class="alert alert-danger mb-3" role="alert">
+            {% for error in model.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+</div>
+{% endblock %}
+

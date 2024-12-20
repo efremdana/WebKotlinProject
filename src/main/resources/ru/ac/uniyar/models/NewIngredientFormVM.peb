@@ -1,0 +1,35 @@
+    {% extends "./Layout.peb" %}
+    {# @pebvariable name="model" type="ru.ac.uniyar.models.NewIngredientFormVM" #}
+{% block content %}
+    <h2>Форма для добавления интридиента к рецепту</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name">Название ингредиента</label>
+            <input type="text" class="form-control" name="name" id="name" value="{{ model.form.fields["name"] | first }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="number">Количество</label>
+            <input type="text" class="form-control" name="number" id="time" value="{{ model.form.fields["number"] | first }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="unit">Единица измерения</label>
+            <select class="form-control" name="unit" id="type">
+            {% for type in model.units %}
+            {% if type.type.equalsIgnoreCase(model.form.fields["unit"] | first) %}
+                <option selected="selected">{{ type.type }}</option>
+            {% else %}
+                <option>{{ type.type }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+        </div>
+        {% if model.form.errors.size() > 0 or model.errors.size() > 0 %}
+        <div class="alert alert-danger mb-3" role="alert">
+            {% for error in model.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Добавить</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends "./Layout.peb" %}
+{# @pebvariable name="model" type="ru.ac.uniyar.models.CookbookVM" #}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col">
+                <h1 class="text-center">Кулинарная книга</h1>
+            </div>
+            {% if model.permissions.canAddRecipe %}
+            <div class="col col-lg-2 align-self-center">
+                <a class="btn btn-secondary btn-sm" href="/cookbook/new-recipe-form" role="button">Добавить</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container text-center">
+    {% if model.paginator.listData is empty %}
+        <div class="row">
+            <div class="col" align="center">
+                <h2 class="text-center">Список пуст</h2>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-sm-10">
+                <table class="table table-bordered" align="center" cellpadding="5">
+                    <tr>
+                        <th>№</th>
+                        <th>Название</th>
+                        <th>Тип блюда</th>
+                        <th>Время готовки, мин</th>
+                        <th>Дата добавления</th>
+                        <th>Автор</th>
+                    </tr>
+                {% for recipe in model.paginator.listData %}
+                    <tr>
+                        <td><a href="/cookbook/{{ recipe.number }}">{{ recipe.number }}</a></td>
+                        <td><div class="d-flex justify-content-start">{{ recipe.name }}</div></td>
+                        <td>{{ recipe.type.type }}</td>
+                        <td>{{ recipe.cookingTime }}</td>
+                        <td>{{ recipe.date }}</td>
+                        <td><a href="/author/{{ recipe.author }}"><div class="d-flex justify-content-start">{{ recipe.author }}</div></a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
+{% block form %}
+<form method="GET">
+    <div class="container">
+        <div class="row justify-content-start">
+            <div class="col align-self-start">
+                <div class="col">
+                    <label>Тип блюда</label>
+                </div>
+                <div class="col">
+                    <select class="form-control" name="typeDish" id="type">
+                    {% for type in model.types %}
+                    {% if type == model.paginator.typeDish %}
+                        <option selected="selected">{{ type.type }}</option>
+                    {% else %}
+                        <option>{{ type.type }}</option>
+                    {% endif %}
+                    {% endfor %}
+                        {% if model.paginator.typeDish == null %}
+                            <option selected="selected">-Ничего-</option>
+                        {% else %}
+                            <option>-Ничего-</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <div class="col align-self-center">
+                <div class="col">
+                    <label>Минимальное время приготовления</label>
+                </div>
+                <div class="col">
+                    <input type="text" name="minTime" value="{{ model.paginator.minTime }}">
+                </div>
+            </div>
+            <div class="col align-self-end">
+                <div class="col">
+                    <label>Максимальное время приготовления</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="maxTime" value="{{ model.paginator.maxTime }}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col button mt-3">
+                <button type="submit">Применить фильтр</button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% block pagination %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {{ model.paginator.hasPrevious }}">
+                <a class="page-link" href="{{model.paginator.getFirstPage}}"><span aria-hidden="true">Первая</span></a>
+            </li>
+            <li class="page-item {{ model.paginator.hasPrevious }}">
+                <a class="page-link" href="{{model.paginator.getPreviousPage}}"><span aria-hidden="true">&laquo;</span></a>
+            </li>
+            <li class="page-item {{ model.paginator.hasNext }}">
+                <a class="page-link" href="{{model.paginator.getNextPage}}"><span aria-hidden="true">&raquo;</span></a>
+            </li>
+            <li class="page-item {{ model.paginator.hasNext }}">
+                <a class="page-link" href="{{model.paginator.getLastPage}}"><span aria-hidden="true">Последняя</span></a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+

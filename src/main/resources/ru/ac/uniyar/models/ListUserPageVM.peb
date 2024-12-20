@@ -1,0 +1,46 @@
+{% extends "./Layout.peb" %}
+{# @pebvariable name="model" type="ru.ac.uniyar.models.ListUserPageVM" #}
+{% block content %}
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center">Список пользователей</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center">
+    {% if model.listUser is empty %}
+        <div class="row">
+            <div class="col" align="center">
+                <label>Список пуст</label>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
+                <table class="table table-bordered" align="center">
+                    <caption><a class="btn btn-secondary btn-sm" href="/new-user">Добавить</a></caption>
+                    <tr>
+                        <th>Логин</th>
+                        <th>Имя</th>
+                        <th>Дата регистрации</th>
+                        <th>Права</th>
+                        <th>Изменить права</th>
+                    </tr>
+                {% for user in model.listUser %}
+                    {% set client = user.first %}
+                    <tr>
+                        <td><div class="d-flex justify-content-start">{{ client.userName }}</div></td>
+                        <td><div class="d-flex justify-content-start">{{ client.name }}</div></td>
+                        <td>{{ client.registration }}</td>
+                        <td>{{ user.second }}</td>
+                        <td><a href="/users/{{ client.userName + "&" + user.second }}">Изменить</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}
+

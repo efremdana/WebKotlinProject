@@ -1,0 +1,44 @@
+    {% extends "./Layout.peb" %}
+    {# @pebvariable name="model" type="ru.ac.uniyar.models.EditRecipeFormVM" #}
+    {% block content %}
+<h2>Форма для редактирования рецепта</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="name">Название рецепта</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{ model.recipe.name }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="description">Описание рецепта</label>
+        <input type="text" class="form-control" name="description" id="description" value="{{ model.recipe.description }}">
+    </div>
+    <div class="mb-3">
+        <label for="type">Выбери тип блюда</label>
+        <select class="form-control" name="type" id="type" value="{{ model.recipe.type.type }}">
+        {% for type in model.types %}
+        {% if type == model.recipe.type %}
+            <option selected="selected">{{ type.type }}</option>
+        {% else %}
+            <option>{{ type.type }}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="time">Время готовки, мин</label>
+        <input type="text" class="form-control" name="time" id="time" value="{{ model.recipe.cookingTime }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="steps">Введите шаги проготовления</label>
+        <textarea class="form-control" name="steps" id="steps" rows="7">{{ model.steps }}</textarea>
+        <small id="stepsHelp" class="form-text text-muted">Каждый новый шаг с новой строки</small>
+    </div>
+    {% if model.form.errors.size() > 0 or model.errors.size() > 0 %}
+    <div class="alert alert-danger mb-3" role="alert">
+        {% for error in model.errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">Редактировать</button>
+</form>
+{% endblock %}

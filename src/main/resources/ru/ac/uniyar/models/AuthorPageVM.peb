@@ -1,0 +1,24 @@
+{% extends "./Layout.peb" %}
+{# @pebvariable name="model" type="ru.ac.uniyar.models.AuthorPageVM" #}
+{% block content %}
+<div align="center">
+    <h1>Автор рецепта</h1>
+    <h2>Имя: {{ model.author.name }}</h2>
+    <p>Дата регистрации: {{ model.author.registration }}</p>
+    <h3>Список рецептов:</h3>
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <ol>
+                <div class="col">
+                {% for recipe in model.author.showListRecipes %}
+                    <div class="d-flex justify-content-start">
+                        <li>{{ recipe }}</li>
+                    </div>
+                {% endfor %}
+                </div>
+            </ol>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    

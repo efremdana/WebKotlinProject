@@ -1,0 +1,39 @@
+    {% extends "./Layout.peb" %}
+    {# @pebvariable name="model" type="ru.ac.uniyar.models.DeleteRecipeFormVM" #}
+    {% block content %}
+    <div>
+        <div align="center">
+            <h2>Удаляемый рецепт</h2>
+        </div>
+        <h1>{{ model.recipe.name }}</h1>
+        <h3>Время готовки: {{ model.recipe.cookingTime }}</h3>
+        <h3>Тип блюда: {{ model.recipe.type.type }}</h3>
+        <p>Описание: {{ model.recipe.description }}</p>
+        <p>Ингредиенты</p>
+        <ul>
+            {% for ingredient in model.recipe.listIngredient %}
+                <li>{{ ingredient.toString() }}</li>
+            {% endfor %}
+        </ul>
+        <ol>
+            {% for step in model.recipe.steps %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div>
+        <form method="POST">
+          <div class="mb-3 form-check">
+            <input type="checkbox" name="checkRemove" class="form-check-input" id="checkRemove">
+            <label class="form-check-label" for="checkRemove">Уверены, что хотите удалить рецепт?</label>
+          </div>
+          </div>
+            {% if model.checkRemove == "off" %}
+            <div class="alert alert-danger mb-3" role="alert">
+                Нужно подтвердить удаление
+            </div>
+            {% endif %}
+          <button type="submit" class="btn btn-primary">Удалить</button>
+        </form>
+    </div>
+{% endblock %}
